@@ -13,3 +13,16 @@ body {
 canvas {
     border: 1px solid white;
 }
+
+.game {
+    position: absolute; left: 0; top: 0; z-index: 0;
+}
+
+.gameOver {
+    position: absolute; left: 0; top: 0; z-index: 1;
+}
+
+p {
+    padding: 50px;
+    color: white;
+}
