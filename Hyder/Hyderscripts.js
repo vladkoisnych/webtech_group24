@@ -8,7 +8,7 @@
 
 function boardClick(event){
     console.log("You have clicked the board!");
-  let xInCanvas =   event.clientX - getBoundingClientRect().left
+  let xInCanvas =   event.clientX - canvas.getBoundingClientRect().left
 
 }
 canvas.addEventListener("click",boardClick);
@@ -28,23 +28,27 @@ let column;
 
     console.log(board);
 
-function insertCounter(counter,player){
-for (row = 5; row >= 0; row--){
-if(board[row][column] == null)
-    board[row][column] = 'x';
-    }
-     console.log("Insert your counter!");
-   }
-}
+function insertCounter(player,column){
 
+let counterPlacement = false;
 
+for (let row = 5; row >= 0; row--){
 if(board[row][column] == null){
+    board[row][column] = player;
+    console.log("Insert your counter!");
+    counterPlacement = true;
+    break;
+    }
+  }
+
+
+if(counterPlacement){
 console.log("Valid placement");
 }
-else {
+else  {
 console.log("invalid placement");
-}
-
+      }
+    }
 canvas.addEventListener("click",insertCounter);
 
 
