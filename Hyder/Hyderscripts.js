@@ -6,6 +6,27 @@
     ctx.fillStyle= "#376996";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+
+for( row = 0; row < 6; row++) {
+        board[row] = [];
+        for ( column = 0; column < 7; column++) {
+            board[row][column] = null;
+        }
+    }
+
+ctx.beginPath();
+ctx.arc(300,300,50,0,2 * Math.PI);
+ctx.arc(200,300,50,0,2 * Math.PI);
+ctx.arc(100,300,50,0,2 * Math.PI);
+ctx.stroke();
+ctx.fillStyle = "#B2A4D4";
+ctx.fill();
+
+
+
+
+
+
 function boardClick(event){
     console.log("You have clicked the board!");
   let xInCanvas =   event.clientX - canvas.getBoundingClientRect().left
