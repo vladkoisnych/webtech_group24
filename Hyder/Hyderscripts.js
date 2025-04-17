@@ -1,30 +1,38 @@
 
-
-
-    const canvas = document.getElementById("myCanvas");
+const canvas = document.getElementById("myCanvas");
   const ctx = canvas.getContext("2d");
-    ctx.fillStyle= "#376996";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 
-for( row = 0; row < 6; row++) {
+    let board = [];
+    let currentPlayer="Yellow";
+     let radius = 40;
+
+
+for(let row = 0; row < 6; row++) {
         board[row] = [];
-        for ( column = 0; column < 7; column++) {
+        for (let column = 0; column < 7; column++) {
             board[row][column] = null;
         }
     }
+ctx.globalCompositeOperation = "destination-out";
 
-ctx.beginPath();
-ctx.arc(300,300,50,0,2 * Math.PI);
-ctx.arc(200,300,50,0,2 * Math.PI);
-ctx.arc(100,300,50,0,2 * Math.PI);
-ctx.stroke();
-ctx.fillStyle = "#B2A4D4";
-ctx.fill();
+function boardDrawing(){
+ ctx.fillStyle= "#376996";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-
-
-
+for (let row = 0; row < 6; row++) {
+    for (let column = 0; column < 7; column++){
+   let x = 100 + column * 100;
+   let y = 100 + row * 100;
+        ctx.beginPath();
+        ctx.arc(x,y,radius,0,2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+           }
+       }
+   }
+boardDrawing();
+ctx.globalCompositeOperation = "source-over";
 
 
 function boardClick(event){
@@ -35,7 +43,6 @@ function boardClick(event){
 canvas.addEventListener("click",boardClick);
 
 
-let board = [];
 let row;
 let column;
 
@@ -70,7 +77,7 @@ else  {
 console.log("invalid placement");
       }
     }
-canvas.addEventListener("click",insertCounter);
+//canvas.addEventListener("click",insertCounter);
 
 
 
