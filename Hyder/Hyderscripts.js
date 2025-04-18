@@ -38,21 +38,31 @@ ctx.globalCompositeOperation = "source-over";
 function boardClick(event){
     console.log("You have clicked the board!");
   let xInCanvas =   event.clientX - canvas.getBoundingClientRect().left
+    let columnSector = Math.floor(xInCanvas/100);
+    if (columnSector >= 0 && columnSector <= 6){
+    console.log("Placement is within the area");
 
-}
+    //let counterPlacement = true;
+
+    insertCounter(currentPlayer,columnSector);
+    boardDrawing();
+    }
+    if(currentPlayer == "Yellow"){
+        currentPlayer="Red";
+        } else {
+        currentPlayer= "Yellow";
+        }
+
+     }  else {
+   //counterPlacement = false;
+   console.log("Please re-select your placement")
+   }
 canvas.addEventListener("click",boardClick);
 
 
 let row;
 let column;
 
-
-    for( row = 0; row < 6; row++) {
-        board[row] = [];
-        for ( column = 0; column < 7; column++) {
-            board[row][column] = null;
-        }
-    }
 
     console.log(board);
 
