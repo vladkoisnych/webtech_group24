@@ -22,42 +22,55 @@ function boardDrawing(){
 
 for (let row = 0; row < 6; row++) {
     for (let column = 0; column < 7; column++){
-   let x = 100 + column * 100;
-   let y = 100 + row * 100;
+   let x = 100 + column * 100 + 50;
+   let y = 100 + row * 100 + 50;
         ctx.beginPath();
         ctx.arc(x,y,radius,0,2 * Math.PI);
-        ctx.fill();
+
+       if(board[row][column] == "Red"){
+           ctx.fillStyle = "Red";
+               ctx.stroke();
+       }
+
+        if(board[row][column] == "Yellow"){
+        ctx.fillStyle = "Yellow";
         ctx.stroke();
            }
+
+         else{
+         ctx.globalCompositeOperation = "destination-out";
+         ctx.fill();
+         ctx.stroke();
+         ctx.globalCompositeOperation = "source-over";
+         }
+         }
        }
    }
 boardDrawing();
-ctx.globalCompositeOperation = "source-over";
+
 
 
 function boardClick(event){
     console.log("You have clicked the board!");
   let xInCanvas =   event.clientX - canvas.getBoundingClientRect().left
     let columnSector = Math.floor(xInCanvas/100);
+
     if (columnSector >= 0 && columnSector <= 6){
     console.log("Placement is within the area");
-
-    //let counterPlacement = true;
-
     insertCounter(currentPlayer,columnSector);
     boardDrawing();
-    }
-    if(currentPlayer == "Yellow"){
-        currentPlayer="Red";
-        } else {
-        currentPlayer= "Yellow";
-        }
+
+        if(currentPlayer == "Yellow"){
+            currentPlayer="Red";
+            } else {
+            currentPlayer= "Yellow";
+            }
 
      }  else {
    //counterPlacement = false;
    console.log("Please re-select your placement")
    }
-canvas.addEventListener("click",boardClick);
+
 
 
 let row;
@@ -88,6 +101,6 @@ console.log("invalid placement");
       }
     }
 //canvas.addEventListener("click",insertCounter);
-
-
+}
+canvas.addEventListener("click",boardClick);
 
