@@ -1,12 +1,12 @@
-
 const canvas = document.getElementById("myCanvas");
+
   const ctx = canvas.getContext("2d");
 
 
     let board = [];
-    let currentPlayer="Yellow";
+    let currentPlayer="aqua";
      let radius = 40;
-
+   console.log(board);
 
 for(let row = 0; row < 6; row++) {
         board[row] = [];
@@ -22,27 +22,32 @@ function boardDrawing(){
 
 for (let row = 0; row < 6; row++) {
     for (let column = 0; column < 7; column++){
-   let x = 100 + column * 100 + 50;
-   let y = 100 + row * 100 + 50;
+   let x = column * 100 + 50;
+   let y =  row * 100 + 50;
+
         ctx.beginPath();
         ctx.arc(x,y,radius,0,2 * Math.PI);
 
-       if(board[row][column] == "Red"){
-           ctx.fillStyle = "Red";
+       if(board[row][column] == "aqua"){
+           ctx.fillStyle = "#00FFFF";
+                ctx.fill();
+               ctx.strokeStyle= "#FFFFFF";
                ctx.stroke();
        }
 
-        if(board[row][column] == "Yellow"){
-        ctx.fillStyle = "Yellow";
+        else if(board[row][column] == "magenta"){
+        ctx.fillStyle = "#FF00FF";
+        ctx.fill();
+        ctx.strokeStyle= "#FFFFFF";
         ctx.stroke();
            }
 
-         else{
-         ctx.globalCompositeOperation = "destination-out";
-         ctx.fill();
-         ctx.stroke();
-         ctx.globalCompositeOperation = "source-over";
-         }
+            else{
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.fill();
+            ctx.stroke();
+            ctx.globalCompositeOperation = "source-over";
+            }
          }
        }
    }
@@ -57,27 +62,28 @@ function boardClick(event){
 
     if (columnSector >= 0 && columnSector <= 6){
     console.log("Placement is within the area");
-    insertCounter(currentPlayer,columnSector);
-    boardDrawing();
 
-        if(currentPlayer == "Yellow"){
-            currentPlayer="Red";
+
+         let moveChecker = insertCounter(currentPlayer,columnSector);
+        if(moveChecker){
+          boardDrawing();
+        }
+
+        if(currentPlayer == "aqua"){
+            currentPlayer= "magenta";
             } else {
-            currentPlayer= "Yellow";
+            currentPlayer= "aqua";
             }
 
      }  else {
-   //counterPlacement = false;
-   console.log("Please re-select your placement")
+   console.log("You cannot insert your counter here. Please re-insert");
    }
+}
 
 
 
-let row;
-let column;
 
 
-    console.log(board);
 
 function insertCounter(player,column){
 
@@ -99,8 +105,8 @@ console.log("Valid placement");
 else  {
 console.log("invalid placement");
       }
+return counterPlacement;
     }
-//canvas.addEventListener("click",insertCounter);
-}
+
 canvas.addEventListener("click",boardClick);
 
