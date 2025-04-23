@@ -108,5 +108,62 @@ console.log("invalid placement");
 return counterPlacement;
     }
 
-canvas.addEventListener("click",boardClick);
 
+function verticalwinCheck(row,column,player){
+if(
+board[row][column] == player &&
+       board[row+1][column] == player &&
+            board[row+2][column] == player &&
+                board[row+3][column] == player
+     ){
+    alert("You have won!");
+    return true;
+    }
+     return false;
+}
+
+
+function horizontalwinCheck(row,column,player){
+if(
+board[row][column] == player &&
+       board[row][column+1] == player &&
+            board[row][column+2] == player &&
+                board[row][column+3] == player
+    ){
+
+        alert("You have won!");
+        return true;
+      }
+        return false;
+    }
+function diagonalwinCheck(row,column,player){
+if(
+board[row][column] == player &&
+       board[row+1][column+1] == player &&
+            board[row+2][column+2] == player &&
+                board[row+3][column+3] == player
+  ){
+
+
+    alert("You have won!");
+    return true;
+    }
+    return false;
+}
+function diagonalwinCheck2(row,column,player){
+if(
+board[row][column] == player &&
+       board[row-1][column-1] == player &&
+            board[row-2][column-2] == player &&
+                board[row-3][column-3] == player
+   ){
+        alert("You have won!");
+        return true;
+    }
+        return false;
+ }
+canvas.addEventListener("click",boardClick);
+canvas.addEventListener("click",verticalwinCheck);
+canvas.addEventListener("click",horizontalwinCheck);
+canvas.addEventListener("click",diagonalwinCheck);
+canvas.addEventListener("click",diagonalwinCheck2);
