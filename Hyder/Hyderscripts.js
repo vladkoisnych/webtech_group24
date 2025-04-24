@@ -2,7 +2,7 @@ const canvas = document.getElementById("myCanvas");
 
   const ctx = canvas.getContext("2d");
 
-
+    let gameWon = false;
     let board = [];
     let currentPlayer="aqua";
      let radius = 40;
@@ -17,6 +17,7 @@ for(let row = 0; row < 6; row++) {
 ctx.globalCompositeOperation = "destination-out";
 
 function boardDrawing(){
+if(gameWon) return;
  ctx.fillStyle= "#376996";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -63,18 +64,22 @@ function boardClick(event){
     if (columnSector >= 0 && columnSector <= 6){
     console.log("Placement is within the area");
 
-
-         let moveChecker = insertCounter(currentPlayer,columnSector);
-        if(moveChecker){
+         let row = insertCounter(currentPlayer,columnSector);
+        if(row != null){
           boardDrawing();
-        }
+
+        if(winChecker(row,columnSector,currentPlayer)){
+            gameWon = true;
+            alert(currentPlayer + " won!")
+            return;
+            }
 
         if(currentPlayer == "aqua"){
             currentPlayer= "magenta";
             } else {
             currentPlayer= "aqua";
             }
-
+        }
      }  else {
    console.log("You cannot insert your counter here. Please re-insert");
    }
@@ -82,31 +87,17 @@ function boardClick(event){
 
 
 
-
-
-
 function insertCounter(player,column){
-
-let counterPlacement = false;
-
 for (let row = 5; row >= 0; row--){
 if(board[row][column] == null){
     board[row][column] = player;
-    console.log("Insert your counter!");
-    counterPlacement = true;
-    break;
-    }
-  }
-
-
-if(counterPlacement){
-console.log("Valid placement");
-}
-else  {
-console.log("invalid placement");
+    console.log("placed" ,player,"at",row,column)
+    return row;
+        }
       }
-return counterPlacement;
-    }
+     console.log("Column full at", column)
+    return null;
+}
 
 
 function verticalwinCheck(row,column,player){
@@ -116,12 +107,10 @@ board[row][column] == player &&
             board[row+2][column] == player &&
                 board[row+3][column] == player
      ){
-    alert("You have won!");
-    return true;
+     return true;
     }
-     return false;
+    return false;
 }
-
 
 function horizontalwinCheck(row,column,player){
 if(
@@ -130,40 +119,43 @@ board[row][column] == player &&
             board[row][column+2] == player &&
                 board[row][column+3] == player
     ){
-
-        alert("You have won!");
-        return true;
-      }
-        return false;
-    }
+    return true;
+   }
+   return false;
+ }
 function diagonalwinCheck(row,column,player){
 if(
 board[row][column] == player &&
        board[row+1][column+1] == player &&
             board[row+2][column+2] == player &&
                 board[row+3][column+3] == player
-  ){
-
-
-    alert("You have won!");
+    ){
     return true;
     }
     return false;
-}
+   }
 function diagonalwinCheck2(row,column,player){
 if(
 board[row][column] == player &&
        board[row-1][column-1] == player &&
             board[row-2][column-2] == player &&
                 board[row-3][column-3] == player
-   ){
-        alert("You have won!");
-        return true;
+    ){
+    return true;
     }
-        return false;
+    return false;
+ }
+
+ function winChecker(row,column,player){
+  if(
+    horizontalwinCheck(row,column,player) ||
+    verticalwinCheck(row,column,player) ||
+    diagonalwinCheck(row,column,player) ||
+    diagonalwinCheck2(row,column,player)
+    ){
+      alert("You have won!");
+     return true;
+     }
+      return false;
  }
 canvas.addEventListener("click",boardClick);
-canvas.addEventListener("click",verticalwinCheck);
-canvas.addEventListener("click",horizontalwinCheck);
-canvas.addEventListener("click",diagonalwinCheck);
-canvas.addEventListener("click",diagonalwinCheck2);
