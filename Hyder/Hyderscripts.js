@@ -1,12 +1,13 @@
+// creating my canvas - "game board"
 const canvas = document.getElementById("myCanvas");
-
   const ctx = canvas.getContext("2d");
 
     let gameWon = false;
-    let board = [];
+    let board = []; // initialisation of board
     let currentPlayer="aqua";
      let radius = 40;
    console.log(board);
+// board creation
 
 for(let row = 0; row < 6; row++) {
         board[row] = [];
@@ -15,7 +16,7 @@ for(let row = 0; row < 6; row++) {
         }
     }
 ctx.globalCompositeOperation = "destination-out";
-
+ // setting the counters to match my canvas dimensions
 function boardDrawing(){
 if(gameWon) return;
  ctx.fillStyle= "#376996";
@@ -28,6 +29,8 @@ for (let row = 0; row < 6; row++) {
 
         ctx.beginPath();
         ctx.arc(x,y,radius,0,2 * Math.PI);
+
+// player counter styles set
 
        if(board[row][column] == "aqua"){
            ctx.fillStyle = "#00FFFF";
@@ -44,7 +47,7 @@ for (let row = 0; row < 6; row++) {
            }
 
             else{
-            ctx.globalCompositeOperation = "destination-out";
+            ctx.globalCompositeOperation = "destination-out"; // used to create the empty hole look for empty space on board
             ctx.fill();
             ctx.stroke();
             ctx.globalCompositeOperation = "source-over";
@@ -55,6 +58,8 @@ for (let row = 0; row < 6; row++) {
 boardDrawing();
 
 
+// function to grab user clicks within my game board and check whether placement is in bounds
+// gameWon used to detect win
 
 function boardClick(event){
     console.log("You have clicked the board!");
@@ -67,7 +72,7 @@ function boardClick(event){
          let row = insertCounter(currentPlayer,columnSector);
         if(row != null){
           boardDrawing();
-
+         console.log("win check at row", row, "column", columnSector, "for the", currentPlayer);
         if(winChecker(row,columnSector,currentPlayer)){
             gameWon = true;
             alert(currentPlayer + " won!")
@@ -85,7 +90,7 @@ function boardClick(event){
    }
 }
 
-
+// counter function used to check where in the board the user has placed the counter
 
 function insertCounter(player,column){
 for (let row = 5; row >= 0; row--){
@@ -99,54 +104,44 @@ if(board[row][column] == null){
     return null;
 }
 
+// win checking functions to check in each direction if victory has been achieved
 
 function verticalwinCheck(row,column,player){
-if(
-board[row][column] == player &&
-       board[row+1][column] == player &&
-            board[row+2][column] == player &&
-                board[row+3][column] == player
-     ){
-     return true;
-    }
-    return false;
+if(row > 2) return false;
+return (board[row][column] == player &&
+       board[row+1]?.[column] == player &&
+            board[row+2]?.[column] == player &&
+                board[row+3]?.[column] == player
+     )
 }
 
 function horizontalwinCheck(row,column,player){
-if(
-board[row][column] == player &&
-       board[row][column+1] == player &&
-            board[row][column+2] == player &&
-                board[row][column+3] == player
-    ){
-    return true;
-   }
-   return false;
+if(column > 3) return false;
+return (board[row][column] == player &&
+       board[row]?.[column+1] == player &&
+            board[row]?.[column+2] == player &&
+                board[row]?.[column+3] == player
+    )
  }
 function diagonalwinCheck(row,column,player){
-if(
-board[row][column] == player &&
-       board[row+1][column+1] == player &&
-            board[row+2][column+2] == player &&
-                board[row+3][column+3] == player
-    ){
-    return true;
-    }
-    return false;
-   }
+if(row > 2 || column > 3) return false;
+return (board[row][column] == player &&
+       board[row+1]?.[column+1] == player &&
+            board[row+2]?.[column+2] == player &&
+                board[row+3]?.[column+3] == player
+    )
+}
 function diagonalwinCheck2(row,column,player){
-if(
-board[row][column] == player &&
-       board[row-1][column-1] == player &&
-            board[row-2][column-2] == player &&
-                board[row-3][column-3] == player
-    ){
-    return true;
-    }
-    return false;
+if(row > 3 || column > 3) return false;
+return(board[row][column] == player &&
+       board[row-1]?.[column+1] == player &&
+            board[row-2]?.[column+2] == player &&
+                board[row-3]?.[column+3] == player
+    )
  }
 
  function winChecker(row,column,player){
+ console.log("running win check");
   if(
     horizontalwinCheck(row,column,player) ||
     verticalwinCheck(row,column,player) ||
