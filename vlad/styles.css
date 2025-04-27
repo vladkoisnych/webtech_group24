@@ -4,14 +4,14 @@ html, body {
 }
 
 body {
-    background: black;
+    background-color: #93B2B4;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 canvas {
-    border: 1px solid white;
+    border: 1px solid black;
 }
 
 .game {
@@ -24,5 +24,17 @@ canvas {
 
 p {
     padding: 50px;
-    color: white;
+    color: black;
+}
+
+#playAgain {
+    position: fixed;
+    bottom: 10px;
+    display: none;
+}
+
+#backToMenu {
+    position: fixed;
+    left: 10%;
+    top: 30px;
 }

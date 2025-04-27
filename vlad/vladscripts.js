@@ -3,14 +3,21 @@ const context = canvas.getContext('2d');
 const overCanvas = document.getElementById('gameOver');
 const overContext = overCanvas.getContext('2d');
 const nextCanvas = document.getElementById('next');
-const scoreLabel = document.getElementById('scoreLbl');
 const nextContext = nextCanvas.getContext('2d');
+const scoreLabel = document.getElementById('scoreLbl');
+const restartBtn = document.getElementById('playAgain');
+
+restartBtn.addEventListener('click', () => {
+  location.reload();
+});
 
 const grid = 32;
 const tetrominoSequence = [];
 const playfield = Array.from({ length: 20 }, () => Array(10).fill(0));
 var score = 0;
 
+
+//pre detrmined tetriminos and their usual assigned colours
 const tetrominos = {
   'I': [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
   'J': [[1, 0, 0], [1, 1, 1], [0, 0, 0]],
@@ -21,7 +28,7 @@ const tetrominos = {
   'T': [[0, 1, 0], [1, 1, 1], [0, 0, 0]]
 };
 
-const colors = {
+const colours = {
   'I': 'cyan', 'J': 'blue', 'L': 'orange',
   'O': 'yellow', 'S': 'green', 'T': 'purple', 'Z': 'red'
 };
@@ -71,7 +78,7 @@ function isValidMove(matrix, cellRow, cellCol) {
 function placeTetromino() {
   tetromino.matrix.forEach((row, r) => row.forEach((cell, c) => {
     if (cell) {
-      if (tetromino.row + r < 0) return showGameOver();
+      if (tetromino.row + r <= 0) return showGameOver();
       playfield[tetromino.row + r][tetromino.col + c] = tetromino.name;
     }
   }));
@@ -91,16 +98,31 @@ function placeTetromino() {
 function showGameOver() {
   gameOver = true;
   console.log("Game Over");
-  overCanvas.style.display="inline";
+  const highestScore = localStorage.getItem('highestScore') || 0;
+  if (score > highestScore) {
+    localStorage.setItem('highestScore', score);
+  }
+  overCanvas.style.display = "inline";
   overContext.fillStyle = 'black';
   overContext.globalAlpha = 0.75;
-  overContext.fillRect(0, overCanvas.height / 2 - 30, overCanvas.width, 60);
+  overContext.fillRect(0, overCanvas.height / 2 - 30, overCanvas.width, 160);
   overContext.globalAlpha = 1;
   overContext.fillStyle = 'white';
   overContext.font = '36px monospace';
   overContext.textAlign = 'center';
   overContext.fillText('GAME OVER!', overCanvas.width / 2, overCanvas.height / 2);
+  overContext.fillText('SCORE: ' + score, overCanvas.width / 2, overCanvas.height / 2 + 40);
+
+  const savedHighScore = localStorage.getItem('highestScore') || 0;
+  overContext.fillText('HIGHEST: ' + savedHighScore, overCanvas.width / 2, overCanvas.height / 2 + 80);
+  canvas.style.display = "none";
+  nextCanvas.style.display = "none";
+  scoreLabel.style.display = "none";
+
+  restartBtn.style.display = "inline";
 }
+
+
 
 function getGhostPosition() {
   let ghostRow = tetromino.row;
@@ -112,7 +134,7 @@ function getGhostPosition() {
 
 function drawNextTetromino() {
   nextContext.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
-  nextContext.fillStyle = colors[nextTetromino.name];
+  nextContext.fillStyle = colours[nextTetromino.name];
 
   nextTetromino.matrix.forEach((row, r) => row.forEach((cell, c) => {
     if (cell) {
@@ -127,7 +149,7 @@ function drawPlayfield() {
 
   playfield.forEach((row, r) => row.forEach((cell, c) => {
     if (cell) {
-      context.fillStyle = colors[cell];
+      context.fillStyle = colours[cell];
       context.fillRect(c * grid, r * grid, grid - 1, grid - 1);
       context.strokeRect(c * grid, r * grid, grid, grid);
     }
@@ -144,7 +166,7 @@ function drawTetromino() {
     }
   }));
 
-  context.fillStyle = colors[tetromino.name];
+  context.fillStyle = colours[tetromino.name];
   tetromino.matrix.forEach((row, r) => row.forEach((cell, c) => {
     if (cell) {
       context.fillRect((tetromino.col + c) * grid, (tetromino.row + r) * grid, grid - 1, grid - 1);
